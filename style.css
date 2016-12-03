@@ -1,0 +1,16 @@
+input.quadratic {
+	width: 2.5em;
+	margin-right: 5px;
+	text-align: center;
+}
+button#quadratic-submit {
+	background-color: black;
+	color: white;
+	border: none;
+	padding: 0.5em 1em;
+	border-radius: 5px;
+	cursor: pointer;
+}
+button#quadratic-submit:active {
+	background-color: grey;
+}
