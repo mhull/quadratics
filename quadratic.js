@@ -1,14 +1,20 @@
 (function(){
+
+	// Coefficient for x^2 provided by user
 	var a = 0;
+
+	// Coefficient for x provided by user
 	var b = 0;
+
+	// Constant number provided by user
 	var c = 0;
 
-	//Inputs for a, b, and c
+	// Form input elements for a, b, and c
 	var aInput = document.querySelector('#input_1');
 	var bInput = document.querySelector('#input_2');
 	var cInput = document.querySelector('#input_3');
 
-	//Submit button
+	// Submit button
 	var submit = document.querySelector('#quadratic-submit');
 
 	// Response div
@@ -20,29 +26,35 @@
 	// Onclick event for submit button
 	submit.addEventListener('click', function(){
 
+		// sanitize the user input
 		a = sanitizeInput( aInput.value );
 		b = sanitizeInput( bInput.value );
 		c = sanitizeInput( cInput.value );
 
-		// If the leading coefficient is zero, then we have a linear equation
+		// If the leading coefficient is zero, then we have a linear equation and not a true quadratic
 		if( 0 === a ) {
 
+			// An equation like 3 = 0 makes no sense, no dismiss this case
 			if( 0 === b && 0 !== c ) {
 
 				initLog( 'Your equation has no solution' );
 				return;
 			}
+
+			// An equation like 0 = 0 is true no matter the value of `x`
 			if( 0 === b && 0 === c ) {
 				initLog( 'Any real number is a solution to this equation' );
 				return;
 			}
 
+			// Otherwise, we have `mx + b = 0`
 			initLog( 'This is a linear equation.  The solution is <em>x = -c / b = ' + (-c/b) + '</em>.' );
 			logMessage( 'To get a quadratic equation, use a non-zero number for <em>a</em>' );
 			return;
-		}
 
-		//Discriminant determines how many solutions we have
+		} // end if: leading coefficient is zero
+
+		// The discriminant (b^2 - 4ac) determines how many solutions we have
 		var disc = getDisc( a, b, c );
 
 		numSolutions = getNumSolutions( disc );
@@ -88,14 +100,23 @@
 		);
 	}
 
+	/**
+	 * Shows the solution to the equation `ax^2 + bx + c = 0`, given the values of a, b, and c
+	 */
 	function showFormula( a, b, c ) {
+
+		if( 1 !== numSolutions && 2 !== numSolutions ) {
+			return;
+		}
+
 		logMessage( '<em>x = ( -b +/- sqrt( b<sup>2</sup> - 4ac ) ) / 2a</em>' );
 		logMessage( '<em>x = ( ' + -b + ' +/- sqrt( ' + getDisc( a, b, c ) + ' ) ) / ' + 2*a + '</em>' );
 
 		if( 1 === numSolutions ) {
 			logMessage( '<em>x = ' + -b / (2*a) + '</em>' );
 		}
-		if(2 == numSolutions){
+
+		if( 2 === numSolutions ) {
 			logMessage('<em>x = ' + (-b+Math.sqrt(getDisc( a, b, c ))) / (2*a) + '</em>');
 			logMessage('or');
 			logMessage('<em>x = ' + (-b-Math.sqrt(getDisc( a, b, c ))) / (2*a) + '</em>');
